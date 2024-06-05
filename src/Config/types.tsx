@@ -6,6 +6,7 @@ export interface Artist {
   }
   
 export interface Song {
+    name: ReactNode;
     _id: string;
     title: string;
     artist: Artist;
@@ -13,5 +14,14 @@ export interface Song {
     songimageUrl: string;
     songurl: string;
     trending: number;
+  }
+
+export interface AlbumData {
+    [x: string]: string[];
+    _id: string;
+    title: string;
+    releaseDate: string;
+    songs: Song[];
+ 
   }
   

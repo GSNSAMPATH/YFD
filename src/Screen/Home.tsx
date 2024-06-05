@@ -4,9 +4,11 @@ import { View, Text, Button, StyleSheet, TouchableOpacity, FlatList, ScrollView 
 import LinearGradient from 'react-native-linear-gradient';
 import { useEffect, useState } from 'react';
 import { Image } from 'react-native';
-import { Artist, Song } from '../Config/types';
-import { fetchArtists, fetchSongs } from '../Config/Api';
+import { AlbumData, Artist, Song } from '../Config/types';
+import { fetchArtists, fetchSongs,fetchAlbums } from '../Config/Api';
 import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
+import Album from '../components/Album';
+import { useNavigation } from '@react-navigation/native';
 
 
 // type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -32,6 +34,9 @@ const HomeScreen: React.FC<Props> = ({}) => {
   const [artists, setArtists] = useState<Artist[]>([]);
   const [songs, setSongs] = useState<Song[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [albums, setAlbums] = useState<AlbumData[]>([]);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchArtists()
@@ -41,28 +46,36 @@ const HomeScreen: React.FC<Props> = ({}) => {
     fetchSongs()
       .then((result) => setSongs(result))
       .catch((error) => setError(error.message));
+
+    fetchAlbums()
+      .then((result) => setAlbums(result))
+      .catch((error) => setError(error.message));
   }, []);
 
       
 
-
     const renderItem = ({ item }: { item: Artist }) => (
-      <View style={styles.item}>
-        <Image source={{ uri: item.image_url }} style={[styles.image]} />
-        <View style={styles.iconContainer}></View>
-        <View style={styles.icon}></View>
-        <Text style={styles.title}>{item.name}</Text> 
-        {/* <Text style={styles.genre}>{item.genre}</Text> */}
-      </View>
+      <TouchableOpacity onPress={() => navigation.navigate('Artist', { artist: item })}>
+        <View style={styles.item}>
+          <Image source={{ uri: item.image_url }} style={[styles.image]} />
+          <View style={styles.iconContainer}></View>
+          <View style={styles.icon}></View>
+          <Text style={styles.title}>{item.name}</Text>  
+        </View> 
+      </TouchableOpacity>
+
       
     ); 
     
     const renderSong = ({ item }: { item: Song }) => (
-      <View style={styles.Item2}>
-        <Image source={{ uri: item.songimageUrl }} style={[styles.image2]} />
-        {/* <Text >{item.title}</Text> */}
-     
-      </View>
+      <TouchableOpacity>
+        <View style={styles.Item2}>
+          <Image source={{ uri: item.songimageUrl }} style={[styles.image2]} />
+          <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
+          {item.title}
+          </Text>
+        </View>
+      </TouchableOpacity>
     );
 
 
@@ -70,6 +83,7 @@ const HomeScreen: React.FC<Props> = ({}) => {
 
 
   return (
+    
     <LinearGradient colors={['#360547','#170340', '#000000', '#000000']} style={styles.container}>
       <View>
         <Text style={styles.header}>Top Artists</Text>
@@ -107,7 +121,28 @@ const HomeScreen: React.FC<Props> = ({}) => {
       )}
        </View>
 
-       <View style={styles.container}></View>
+       <View style={styles.container2}>
+        <Text style={styles.header2}> Albums</Text>
+       {error ? (
+            <Text style={styles.errorText}>Error: {error}</Text>
+
+    ) : (
+      
+      <FlatList
+        horizontal
+        data={albums}
+        renderItem={({ item }) => (
+          <Album
+            title={item.title}
+            releaseDate={item.releaseDate}
+            colors={item.colors} songs={[]}          />
+        )}
+        keyExtractor={(item) => item._id}
+        contentContainerStyle={styles.list}
+      />
+
+    )}
+    </View>
   
 
     </LinearGradient>
@@ -140,7 +175,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     fontFamily: 'Poppins-Bold',
-    paddingLeft: 17,
+    paddingLeft: 20,
   },
 
 
@@ -163,14 +198,24 @@ const styles = StyleSheet.create({
   },
 
   Item2: {
-    marginTop: 4,
-    paddingLeft: 20,
+    marginTop: 20,
+    // paddingLeft: 20,
     marginVertical: 16,
     marginHorizontal: -1,
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    color: 'white',
+    // backgroundColor: 'white',
+    width: 120,
+    height: 125,
+    marginLeft: 20,
+    
+  },
+
+  text:{
+    marginTop: 5,
+    color: '#706875',
+    fontSize: 12,
 
 
   },
@@ -263,6 +308,12 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
 
+  list:{
+    marginTop: 2,
+    padding: 20,
+
+  }
+
 
 
 
@@ -270,6 +321,8 @@ const styles = StyleSheet.create({
   });
 
 export default HomeScreen;
+
+
 
 
 
