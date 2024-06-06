@@ -26,8 +26,7 @@ interface Props {
 //   __v: number;
 // }
 
-  // Add other fields as necessary
-
+  // Add other fields as necessaryinterface 
 
 
 const HomeScreen: React.FC<Props> = ({}) => {
@@ -77,7 +76,6 @@ const HomeScreen: React.FC<Props> = ({}) => {
         </View>
       </TouchableOpacity>
     );
-
 
 
 
@@ -135,7 +133,7 @@ const HomeScreen: React.FC<Props> = ({}) => {
           <Album
             title={item.title}
             releaseDate={item.releaseDate}
-            colors={item.colors} songs={[]}          />
+            colors={item.colors} songs={item.songs}          />
         )}
         keyExtractor={(item) => item._id}
         contentContainerStyle={styles.list}

@@ -6,6 +6,7 @@ export interface Artist {
   }
   
 export interface Song {
+    isPlaying: any;
     name: ReactNode;
     _id: string;
     title: string;

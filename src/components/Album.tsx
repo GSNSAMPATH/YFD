@@ -2,6 +2,9 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 interface Song {
   _id: string;
@@ -20,8 +23,9 @@ interface AlbumProps {
 }
 
 const Album: React.FC<AlbumProps> = ({ title, releaseDate, songs, colors }) => {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate('Album', { title, releaseDate, songs,colors })}>
       <LinearGradient colors={colors} style={styles.container}>
         <Text style={styles.title}>{title}</Text>
       </LinearGradient>
