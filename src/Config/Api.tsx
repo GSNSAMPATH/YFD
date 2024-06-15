@@ -54,4 +54,27 @@ export const fetchArtist_Songs = async (_id: string): Promise<Song[]> => {
 };
 
 
+export const fetchArtist = async (_id: string): Promise<Artist[]> => {
+  try {
+    const response = await axios. get<Artist[]>(`https://server-liart-kappa.vercel.app/api/artists/${_id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const fetchsearchSongs = async (query: string): Promise<Song[]> => {
+  try {
+    const response = await axios.get<Song[]>('https://server-liart-kappa.vercel.app/api/songs/search', {
+      params: {
+        q: query
+      }
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+
 

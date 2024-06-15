@@ -9,6 +9,8 @@ import { fetchArtists, fetchSongs,fetchAlbums } from '../Config/Api';
 import { Item } from 'react-native-paper/lib/typescript/components/Drawer/Drawer';
 import Album from '../components/Album';
 import { useNavigation } from '@react-navigation/native';
+import { useAudioPlayer } from '../components/AudioPlayerProvider';
+import { SearchIcon } from '../Imagecomonents/Playicon';
 
 
 // type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
@@ -36,6 +38,8 @@ const HomeScreen: React.FC<Props> = ({}) => {
   const [albums, setAlbums] = useState<AlbumData[]>([]);
 
   const navigation = useNavigation();
+
+  const { currentSong, playSong, stopSong } = useAudioPlayer();
 
   useEffect(() => {
     fetchArtists()
@@ -67,7 +71,10 @@ const HomeScreen: React.FC<Props> = ({}) => {
     ); 
     
     const renderSong = ({ item }: { item: Song }) => (
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => {
+        playSong(item);
+        navigation.navigate('Player');
+      }}>
         <View style={styles.Item2}>
           <Image source={{ uri: item.songimageUrl }} style={[styles.image2]} />
           <Text style={styles.text} numberOfLines={1} ellipsizeMode="tail">
@@ -83,8 +90,16 @@ const HomeScreen: React.FC<Props> = ({}) => {
   return (
     
     <LinearGradient colors={['#360547','#170340', '#000000', '#000000']} style={styles.container}>
-      <View>
+      <View style={styles.headerContainer}>
+        <View style={{ marginRight: '20%' }}>
+          <View style={styles.hambeken}/>
+          <View style={styles.hambeken2}/>
+          <View style={styles.hambeken}/>
+        </View>
         <Text style={styles.header}>Top Artists</Text>
+        <TouchableOpacity style={{ marginLeft: '25%' }} onPress={() => navigation.navigate('Search')}>
+          <SearchIcon/>
+        </TouchableOpacity>
       </View>
     
     
@@ -103,6 +118,11 @@ const HomeScreen: React.FC<Props> = ({}) => {
       <View style={styles.container2}>
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.header2}> Songs </Text>
+          <View style={{ flexDirection: 'column', marginLeft: '65%', marginTop: 7.5 }}>
+          <View style={styles.viwew3}/>
+          <View style={styles.viwew2}/>
+        
+          </View>
     
         </View>
       {error ? (
@@ -120,7 +140,13 @@ const HomeScreen: React.FC<Props> = ({}) => {
        </View>
 
        <View style={styles.container2}>
-        <Text style={styles.header2}> Albums</Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={styles.header2}> Albums</Text>
+            <View style={{ flexDirection: 'column', marginLeft: '63%', marginTop: 7.5}}>
+              <View style={styles.viwew3}/>
+              <View style={styles.viwew2}/>
+            </View>
+         </View>
        {error ? (
             <Text style={styles.errorText}>Error: {error}</Text>
 
@@ -160,6 +186,54 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     // paddingLeft: 10,
  
+  },
+
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    
+    
+  },
+
+  viwew2: {
+    width: 14,
+    height: 4,
+    backgroundColor: '#AFB2B3',
+    margin: 1,
+    borderRadius: 40,
+    transform: [{ rotate: '-40deg' }],
+
+    
+  },
+
+  viwew3: {
+    width: 14,
+    height: 4,
+    backgroundColor: '#AFB2B3',
+    margin: 1,
+    borderRadius: 40,
+    transform: [{ rotate: '40deg' }],
+
+    
+  },
+
+  hambeken: {
+    width: 20,
+    height: 2,
+    backgroundColor: '#fff',
+    margin: 3,
+    borderRadius: 40,
+
+  },
+
+  hambeken2: {
+    width: 20,
+    height: 2,
+    backgroundColor: '#fff',
+    margin: 2,
+    marginLeft: -4,
+
   },
     
   header: {

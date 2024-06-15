@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, FlatList, SafeAreaView, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import { Song } from '../Config/types';
 import { useAudioPlayer } from '../components/AudioPlayerProvider';
 import LinearGradient from 'react-native-linear-gradient';
 import RenderSong from '../Render/RenderSong';
+import { fetchArtist_Songs } from '../Config/Api';
+import { BackArrowIcon } from '../Imagecomonents/Playicon';
 
 interface AlbumScreenProps {
   route: {
@@ -19,7 +21,12 @@ interface AlbumScreenProps {
 
 const AlbumScreen = ({ route }: AlbumScreenProps) => {
   const { title, releaseDate, songs, colors  } = route.params;
-  const { currentSong, playSong, stopSong } = useAudioPlayer();
+  const { currentSong, playSong, stopSong, seek } = useAudioPlayer();
+  const navigation = useNavigation();
+
+  // useEffect(() => {
+  //   fetchArtist_Songs(artist._id).then((result) => setArist(result));
+  // }, []); 
 
   const togglePlayPause = (song: Song) => {
     if (currentSong?._id === song._id) {
@@ -33,6 +40,9 @@ const AlbumScreen = ({ route }: AlbumScreenProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <LinearGradient colors={colors} style={styles.header}>
+        <TouchableOpacity style={styles.icon} onPress={() => navigation.goBack()}>
+          <BackArrowIcon />
+        </TouchableOpacity> 
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.releaseDate}>{new Date(releaseDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
         <Text style={styles.releaseDate}>{new Date(releaseDate).toLocaleTimeString('en-US')}</Text>
@@ -138,9 +148,19 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginRight: 20,
   },
+  icon: {
+    position: 'absolute',
+    top: 30,
+    left: 30,
+    zIndex: 2,
+    
+  
+  },
 });
 
 export default AlbumScreen;
+
+
 
 
 

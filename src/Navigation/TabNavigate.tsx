@@ -3,13 +3,11 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from '../Screen/Home';
 import DetailsScreen from '../Screen/Details';
-import { Header } from '@react-navigation/stack';
-
-import Icon from 'react-native-vector-icons/FontAwesome';
-import HomeImage from '../Imagecomonents/tabbar';
+// import HomeImage from '../Imagecomonents/tabbar';
 import { View } from 'react-native';
 import PlayScreen from '../Screen/PlayScreen';
-const myIcon = <Icon name="home" size={30} color="blue" />;
+import { HomeIcone } from '../Imagecomonents/Playicon';
+
 
 
 // Define the type for the tab navigator's parameters
@@ -30,7 +28,7 @@ const TabNavigator: React.FC = () => {
       tabBarIcon: ({focused, color, size}) => {
             return (
               <View>
-               <HomeImage name="home" size={3} color="black" />
+               <HomeIcone name="home" size={3} color="black" />
               </View>
             );
           }, }}/>
