@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "573436234058",
+    "project_id": "songplay-c29e0",
+    "storage_bucket": "songplay-c29e0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:573436234058:android:c2a41d85bbf6ef944b19b3",
+        "android_client_info": {
+          "package_name": "com.yfd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA7TDB9pTjr6FjBCLpn8_SvDh0bF-sSxs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

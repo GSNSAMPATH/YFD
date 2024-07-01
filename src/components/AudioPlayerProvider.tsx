@@ -13,6 +13,7 @@ type AudioPlayerContextType = {
   currentPosition: number;
   duration: number;
   isPlaying: boolean;
+  CurrentSongListAndIndex: (index: number) => void;
   playSong: (song: Song, index?: number) => void;
   stopSong: () => void;
   seek: (position: number) => void;
@@ -38,12 +39,18 @@ type AudioPlayerProviderProps = {
 
 export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({ children, playlist }) => {
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
+  const [currentSongList, setCurrentSongList] = useState<number | null>(null);
   const [currentPosition, setCurrentPosition] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const soundRef = useRef<Sound | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  
+  const CurrentSongListAndIndex = (songs: Number) => {
+    setCurrentSongList(songs);
+    console.log(songs); 
+  }
 
   useEffect(() => {
     return () => {
@@ -58,6 +65,7 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({ childr
       soundRef.current.stop();
       soundRef.current.release();
       soundRef.current = null;
+      setCurrentIndex(index);
       setCurrentSong(null);
       setCurrentPosition(0);
       setDuration(0);
@@ -77,7 +85,6 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({ childr
       soundRef.current = sound;
       sound.play((success) => {
         if (success) {
-          console.log('successfully finished playing');
           nextSong(); // Automatically play the next song when the current one finishes
         } else {
           console.log('playback failed due to audio decoding errors');
@@ -153,21 +160,32 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({ childr
   };
 
   const nextSong = () => {
-    if (currentIndex !== null && playlist.length > 0) {
-      const nextIndex = (currentIndex + 1) % playlist.length;
-      console.log(nextIndex);
-      const nextSong = playlist[nextIndex];
-
+    console.log('next');
+    console.log(currentIndex);
+    if (currentIndex !== null && currentSongList.length > 1) {
+      const nextIndex = (currentIndex + 1) % currentSongList.length;
+      const nextSong =currentSongList[currentIndex];
       playSong(nextSong, nextIndex);
     }
+
+    else{
+      console.log('No next song');
+    }
+
   };
 
   const previousSong = () => {
-    if (currentIndex !== null && playlist.length > 0) {
-      const prevIndex = (currentIndex - 1 + playlist.length) % playlist.length;
-      const prevSong = playlist[prevIndex];
+    console.log('previous');
+    console.log(currentIndex);
+    if (currentIndex !== null && currentSongList.length > 1) {
+      const prevIndex = (currentIndex - 1 + currentSongList.length) % currentSongList.length;
+      const prevSong =currentSongList[prevIndex];
       playSong(prevSong, prevIndex);
     }
+    else{
+      console.log('No previous song');
+    }
+    
   };
   
   const showCurrentSongImage = () => {
@@ -178,7 +196,7 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({ childr
   };
 
   return (
-    <AudioPlayerContext.Provider value={{ currentSong, currentPosition, duration, isPlaying, playSong, stopSong, seek, playPause, nextSong, previousSong, showCurrentSongImage }}>
+    <AudioPlayerContext.Provider value={{CurrentSongListAndIndex, currentSong, currentPosition, duration, isPlaying, playSong, stopSong, seek, playPause, nextSong, previousSong, showCurrentSongImage }}>
       
       {children}
     </AudioPlayerContext.Provider>

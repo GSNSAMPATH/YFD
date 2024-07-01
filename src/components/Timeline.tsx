@@ -20,8 +20,8 @@ const Timeline: React.FC = () => {
           style={styles.timeline}
         />
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Text>{`${Math.floor(currentPosition / 60)}:${Math.floor(currentPosition % 60).toString().padStart(2, '0')}`} </Text>
-          <Text> {`${Math.floor(duration / 60)}:${Math.floor(duration % 60).toString().padStart(2, '0')}`}</Text>
+          <Text style={{ color: 'white' }}>{`${Math.floor(currentPosition / 60)}:${Math.floor(currentPosition % 60).toString().padStart(2, '0')}`} </Text>
+          <Text style={{ color: 'white' }}> {`${Math.floor(duration / 60)}:${Math.floor(duration % 60).toString().padStart(2, '0')}`}</Text>
         </View>
       </View>
     );

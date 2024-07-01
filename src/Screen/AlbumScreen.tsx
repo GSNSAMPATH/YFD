@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
-import { View, Text, FlatList, SafeAreaView, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { View, Text, FlatList, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { Song } from '../Config/types';
 import { useAudioPlayer } from '../components/AudioPlayerProvider';
 import LinearGradient from 'react-native-linear-gradient';
 import RenderSong from '../Render/RenderSong';
-import { fetchArtist_Songs } from '../Config/Api';
 import { BackArrowIcon } from '../Imagecomonents/Playicon';
 
 interface AlbumScreenProps {
@@ -21,21 +19,23 @@ interface AlbumScreenProps {
 
 const AlbumScreen = ({ route }: AlbumScreenProps) => {
   const { title, releaseDate, songs, colors  } = route.params;
-  const { currentSong, playSong, stopSong, seek } = useAudioPlayer();
+  const { currentSong,CurrentSongListAndIndex , playSong, stopSong, } = useAudioPlayer();
   const navigation = useNavigation();
 
   // useEffect(() => {
   //   fetchArtist_Songs(artist._id).then((result) => setArist(result));
-  // }, []); 
+  // }, []);
+  
+  
 
-  const togglePlayPause = (song: Song) => {
+  const togglePlayPause = (song: Song, index: number) => {
+    CurrentSongListAndIndex(songs)
     if (currentSong?._id === song._id) {
       stopSong();
     } else {
-      playSong(song);
+      playSong(song, index);
     }
   };
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -51,7 +51,7 @@ const AlbumScreen = ({ route }: AlbumScreenProps) => {
       <FlatList
           data={songs}
           keyExtractor={(item) => item._id}
-          renderItem={({ item, index }) => (
+          renderItem={({ item, index}) => (
             <RenderSong
               item={item}
               index={index}

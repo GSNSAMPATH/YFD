@@ -25,11 +25,8 @@ const BackArrowIcon = () => (
   </View>
 );
 
-const HomeIcone = () => (
-  <View style={styles.icon}>
-    <Image source={require('../Imagecomonents/Image/Home4.png')} style={styles.image} />
-  </View>
-);
+
+
 
 const ListIcon = () => (
   <View style={styles.icon}>
@@ -49,7 +46,8 @@ const BackwerdIcon = () => (
   </View>
 )
 
-export { PlayIcon, PlusIcon, SearchIcon, BackArrowIcon, HomeIcone, ListIcon, FowerdIcon, BackwerdIcon };
+
+export { PlayIcon, PlusIcon, SearchIcon, BackArrowIcon, ListIcon, FowerdIcon, BackwerdIcon};
 
 const styles = StyleSheet.create({
   icon: {

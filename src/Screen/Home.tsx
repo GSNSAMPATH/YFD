@@ -38,6 +38,7 @@ const HomeScreen: React.FC<Props> = ({}) => {
   const [albums, setAlbums] = useState<AlbumData[]>([]);
 
   const navigation = useNavigation();
+  
 
   const { currentSong, playSong, stopSong } = useAudioPlayer();
 
@@ -84,6 +85,8 @@ const HomeScreen: React.FC<Props> = ({}) => {
       </TouchableOpacity>
     );
 
+ 
+
 
 
 
@@ -91,11 +94,11 @@ const HomeScreen: React.FC<Props> = ({}) => {
     
     <LinearGradient colors={['#360547','#170340', '#000000', '#000000']} style={styles.container}>
       <View style={styles.headerContainer}>
-        <View style={{ marginRight: '20%' }}>
+        <TouchableOpacity style={{ marginRight: '20%' }} >
           <View style={styles.hambeken}/>
           <View style={styles.hambeken2}/>
           <View style={styles.hambeken}/>
-        </View>
+        </TouchableOpacity>
         <Text style={styles.header}>Top Artists</Text>
         <TouchableOpacity style={{ marginLeft: '25%' }} onPress={() => navigation.navigate('Search')}>
           <SearchIcon/>
@@ -241,6 +244,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 16,
     fontFamily: 'Poppins-Bold',
+    color: '#fff',
   },
 
   header2: {
@@ -248,6 +252,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontFamily: 'Poppins-Bold',
     paddingLeft: 20,
+    color: '#fff',
   },
 
 

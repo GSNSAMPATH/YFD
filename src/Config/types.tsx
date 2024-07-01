@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface Artist {
     _id: string;
     name: string;

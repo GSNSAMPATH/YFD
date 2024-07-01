@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from '@react-navigation/native';
 import { Artist, Song } from '../Config/types';
 import { fetchArtist_Songs } from '../Config/Api';
-import { View, Image, Text, FlatList, SafeAreaView, StyleSheet } from 'react-native';
+import { View, Image, Text, FlatList, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import RenderSong from '../Render/RenderSong';
 import { useAudioPlayer } from '../components/AudioPlayerProvider';
+import { BackArrowIcon } from '../Imagecomonents/Playicon';
 
 interface ArtistScreenProps {
   route: {
@@ -20,26 +21,33 @@ const ArtistScreen = ({ route }: ArtistScreenProps) => {
   const { colors } = useTheme();
   const [songs, setSongs] = useState<Song[]>([]);
   const navigation = useNavigation();
-  const { currentSong, playSong, stopSong } = useAudioPlayer();
+  const { currentSong, playSong,CurrentSongListAndIndex } = useAudioPlayer();
 
   useEffect(() => {
     fetchArtist_Songs(artist._id).then((result) => setSongs(result.songs));
   }, []);
 
   const [index, setIndex] = useState<number>(0);
+  
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % songs.length);
+      setIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % songs.length;
+        return nextIndex;
+      });
     }, 5000);
     return () => clearInterval(interval);
   }, [songs]);
 
-  const togglePlayPause = (song: Song) => {
+  CurrentSongListAndIndex(songs)
+
+
+  const togglePlayPause = (song: Song, index: number) => {
     if (currentSong?._id === song._id) {
       stopSong();
     } else {
-      playSong(song);
+      playSong(song, index);
     }
   };
 
@@ -48,6 +56,9 @@ const ArtistScreen = ({ route }: ArtistScreenProps) => {
       <Image source={{ uri: artist.image_url }} style={styles.image} />
       <View style={styles.textContainer} />
       <View style={styles.textContainer2}>
+        <TouchableOpacity style={styles.icon} onPress={() => navigation.goBack()}>
+          <BackArrowIcon />
+        </TouchableOpacity>
         <Text style={styles.title}>{artist.name}</Text>
         <Text style={styles.subtitle}>{artist.genre}</Text>
       </View>
@@ -133,6 +144,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
     padding: 10,
     paddingTop: 40,
+  },
+  icon: {
+    position: 'absolute',
+    left: 30,
+    zIndex: 1,
+    top: -20,
   },
 });
 

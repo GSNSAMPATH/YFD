@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   resultText: {
     color: "white",
     fontSize: 16,
-    marginVertical: 0,
+    marginVertical: 0, 
   },
   image: {
     width: 40,

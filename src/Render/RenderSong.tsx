@@ -2,19 +2,22 @@ import React from 'react';
 import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Song, Artist } from '../Config/types';
 import { PlayIcon, PlusIcon } from '../Imagecomonents/Playicon';
-import { useAudioPlayer } from '../components/AudioPlayerProvider';
 
 interface RenderSongProps {
   item: Song;
   index: number;
   artist: Artist;
   currentSong: Song | null;
-  togglePlayPause: (song: Song) => void;
+  Songlist: Song[];
+  togglePlayPause: (song: Song, index: number) => void;
 }
 
-const RenderSong = ({ item, index, artist, currentSong, togglePlayPause }: RenderSongProps) => (
+
+
+const RenderSong = ({ item, index, artist, currentSong, Songlist, togglePlayPause }: RenderSongProps) => (
+  console.log(Songlist),
   <View style={styles.song}>
-    <Text style={styles.songNumber}>0{index + 1}</Text>
+    <Text style={styles.songNumber}>0{index = index + 1}</Text>
     {currentSong?._id === item._id && (
       <Image
         source={require('../Imagecomonents/Image/ezgif-1-daa7034682-unscreen.gif')}
@@ -28,7 +31,7 @@ const RenderSong = ({ item, index, artist, currentSong, togglePlayPause }: Rende
       </Text>
       <Text style={styles.songSubtitle}>{artist.name}</Text>
     </View>
-    <TouchableOpacity onPress={() => togglePlayPause(item)} style={styles.songIcon}>
+    <TouchableOpacity onPress={() => togglePlayPause(item, index)} style={styles.songIcon}>
       {currentSong?._id === item._id ? <PlusIcon /> : <PlayIcon />}
     </TouchableOpacity>
   </View>
@@ -57,6 +60,7 @@ const styles = StyleSheet.create({
   },
   songTitle: {
     fontSize: 16,
+    color: '#fff',
   },
   songSubtitle: {
     fontSize: 12,
