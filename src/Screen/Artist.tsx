@@ -21,7 +21,7 @@ const ArtistScreen = ({ route }: ArtistScreenProps) => {
   const { colors } = useTheme();
   const [songs, setSongs] = useState<Song[]>([]);
   const navigation = useNavigation();
-  const { currentSong, playSong,CurrentSongListAndIndex } = useAudioPlayer();
+  const { currentSong, playSong,CurrentSongListAndIndex, stopSong } = useAudioPlayer();
 
   useEffect(() => {
     fetchArtist_Songs(artist._id).then((result) => setSongs(result.songs));
@@ -154,3 +154,5 @@ const styles = StyleSheet.create({
 });
 
 export default ArtistScreen;
+
+

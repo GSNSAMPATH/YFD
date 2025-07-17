@@ -49,7 +49,7 @@ export const AudioPlayerProvider: React.FC<AudioPlayerProviderProps> = ({ childr
   
   const CurrentSongListAndIndex = (songs: Number) => {
     setCurrentSongList(songs);
-    console.log(songs); 
+    console.log(songs);
   }
 
   useEffect(() => {

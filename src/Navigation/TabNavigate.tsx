@@ -34,6 +34,7 @@ const TabNavigator: React.FC = () => {
       tabBarStyle: {
         backgroundColor: '#000',
         borderColor: '#000',
+        borderTopWidth: 0,
       },
       tabBarIcon: ({focused}) => {
         let iconSource;
@@ -44,17 +45,17 @@ const TabNavigator: React.FC = () => {
           
           iconSource = focused ? <PlayerIcon2/> : <PlayerIcon/>;
         }
-        if (route.name === 'Details') {
-          iconSource = focused ? <UserMusicIcon2/> : <UserMusicIcon/>;
-        }
+        // if (route.name === 'Details') {
+        //   iconSource = focused ? <UserMusicIcon2/> : <UserMusicIcon/>;
+        // }
 
         return iconSource;
       },
     })}
   >
-      <Tab.Screen name="Home" component={HomeScreen}/>
+      <Tab.Screen name="Home" component={HomeScreen} options={{ headerLeft: () => null }}/>
       <Tab.Screen name="Player" component={PlayScreen}/>
-      <Tab.Screen name="Details" component={DetailsScreen}/>
+      {/* <Tab.Screen name="Details" component={DetailsScreen}/> */}
     </Tab.Navigator>
   );
 };
@@ -68,5 +69,6 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     borderRadius: 10,
+    marginBottom: 20,
   },
 });

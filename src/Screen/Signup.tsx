@@ -1,14 +1,39 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
 const Signup: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [name1, setName1] = useState<string>('');
+  const [name2, setName2] = useState<string>('');
 
- 
+  const navigation = useNavigation();
 
-  const handleSignup = () => {
-    console.log('Sign up with email:', email, 'password:', password);
+  const handleSignup = async () => {
+    if (!password || email || name1 || name2 === '') {
+      Alert.alert('Please fill in all fields');
+      return;
+    }
+   
+    if (password !== confirmPassword) {
+      Alert.alert('Passwords do not match');
+      return;
+    }
+
+    try {
+      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+      console.log('User signed up:', user);
+      Alert.alert('Sign up successful');
+      navigation.navigate('Login');
+      
+    } catch (error) {
+      console.log('Error signing up:', error);
+      Alert.alert('Sign up failed', error.message);
+    }
   };
 
   return (
@@ -17,11 +42,11 @@ const Signup: React.FC = () => {
   {/* <Text style={styles.title}>Welcome</Text> */}
   <View style={styles.formContainer}>
   <Text style={styles.title}>Sign Up</Text>
-  <TextInput style={styles.input} placeholder="Enter your First Name" keyboardType="default" />
-  <TextInput style={styles.input} placeholder="Enter your Last Name" keyboardType="default" />
-  <TextInput style={styles.input} placeholder="Enter your Email" keyboardType="email-address" />
-  <TextInput style={styles.input} placeholder="Enter your Password" secureTextEntry />
-  <TextInput style={styles.input} placeholder="Confirm Password" secureTextEntry />
+  <TextInput style={styles.input} value= {name1} onChangeText={(text) => setName1(text)} placeholder="Enter your First Name" keyboardType="default"  />
+  <TextInput style={styles.input} value= {name2} onChangeText={(text) => setName2(text)} placeholder="Enter your Last Name" keyboardType="default" />
+  <TextInput style={styles.input} value= {email} onChangeText={(text) => setEmail(text)} placeholder="Enter your Email" keyboardType="email-address" />
+  <TextInput style={styles.input} value= {password} onChangeText={(text) => setPassword(text)} placeholder="Enter your Password" secureTextEntry />
+  <TextInput style={styles.input} value= {confirmPassword} onChangeText={(text) => setConfirmPassword(text)} placeholder="Confirm Password" secureTextEntry />
  
   <View style={styles.rememberMeContainer}>
 
@@ -102,9 +127,14 @@ const styles = StyleSheet.create({
       },
     
       button: {
-        backgroundColor: '#054C43',
+        backgroundColor: 'black',
         padding: 10,
         borderRadius: 10,
+        alignItems: 'center',
+        marginBottom: 20,
+        width: '80%',
+        justifyContent: 'center',
+        shadowColor: '#000',
     
     
       },
@@ -128,3 +158,7 @@ const styles = StyleSheet.create({
     
     export default Signup;
     
+function alert(message: any, email: string | null): any {
+  throw new Error('Function not implemented.');
+}
+

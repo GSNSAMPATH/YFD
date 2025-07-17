@@ -12,6 +12,8 @@ import NDrawer from './src/Navigation/DrawerNavigator';
 import LoginScreen from './src/Screen/LogingScreen';
 import SignInScreen from './src/Screen/LogingScreen';
 import Signup from './src/Screen/Signup';
+import LoadingScreen from './src/Screen/LoadingScreen';
+import UpdatePasswordScreen from './src/components/resetPassword';
 
 const stack = createNativeStackNavigator();
 
@@ -20,7 +22,9 @@ const App: React.FC = () => {
     <AudioPlayerProvider  playlist={[]}>
     <NavigationContainer>
       <stack.Navigator screenOptions={{headerShown: false}}>
+        {/* <stack.Screen name="Loading" component={LoadingScreen} /> */}
         <stack.Screen name="Login" component={SignInScreen}/>
+        <stack.Screen name="ForgotPassword" component={UpdatePasswordScreen}/>
         <stack.Screen name="SignUp" component={Signup}/>
         <stack.Screen name="Tab" component={TabNavigator}/>
         <stack.Screen name="Artist" component={ArtistScreen}/>
@@ -44,3 +48,4 @@ const App: React.FC = () => {
 export default App;
 
 
+ 
